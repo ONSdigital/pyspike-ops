@@ -29,4 +29,5 @@ RUN git clone https://github.com/ONSdigital/pyspike-ops.git
 WORKDIR /home/$user/pyspike-ops
 RUN /home/$user/$envname/bin/pip install .[dev,docbuild]
 
-ENTRYPOINT ["/home/$user/$envname/bin/pyspike-build", "-v"]
+# ARGS are expanded only at build time. Can't be used inside CMD or ENTRYPOINT
+ENTRYPOINT ["/home/devops/py3.5/bin/pyspike-build", "-v"]

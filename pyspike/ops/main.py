@@ -39,7 +39,7 @@ def main(args):
     return 0
 
 def run():
-    p, subs = maloja.cli.parsers()
+    p, subs = pyspike.ops.cli.parsers()
     args = p.parse_args()
     rv = 0
     if args.version:
