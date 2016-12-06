@@ -63,6 +63,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
+            "pyspike-build = pyspike.ops.main:run",
         ],
     },
     zip_safe=False

@@ -18,8 +18,7 @@ pyspike-ops
 This is the devops repository. It is a package for:
 
 * `Configuring a staging environment`_.
-* Vendorising the library package.
-* Containerising the application.
+* `Containerising the application`_.
 
 Initial steps
 ~~~~~~~~~~~~~
@@ -32,7 +31,11 @@ Check out the repository and make it your working directory::
 Configuring a staging environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``$ docker build -t staging -f pyspike/ops/docker/staging.df pyspike/ops/docker``
-``$ docker run -t staging whoami``
+``$ docker build -t pyspike-staging -f pyspike/ops/docker/staging.df pyspike/ops/docker``
+
+Containerising the application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``$ docker run --rm --tty pyspike-staging``
 
 .. _devops repository: https://github.com/ONSdigital/pyspike-ops 
