@@ -1,9 +1,32 @@
-FROM ubuntu:16.04
-RUN apt-get update -y
-RUN apt-get install -yq git
+# This is a Docker file.
+# It defines a container suitable for staging a Python 3 application
 
+FROM ubuntu:16.04
+
+# Override with, eg: " --build-arg user=staging"
+ARG user=devops
+ARG python=python3
+ARG envname=py3.5
+
+# Install essential packages
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -yq git python3 python3-venv python3-pip
+
+# Create a non-privileged user
 RUN umask 775
-RUN adduser --home=/home/devops --disabled-password --gecos "" --shell=/bin/bash devops
-USER devops
-WORKDIR /home/devops
+RUN adduser --home=/home/$user --disabled-password --gecos "" --shell=/bin/bash $user
+USER $user
+WORKDIR /home/$user
+
+# Create a Python virtual environment
+RUN $python -m venv /home/$user/$envname
+RUN /home/$user/$envname/bin/pip install --upgrade pip
+
+# Check out the '-ops' package and install it into the virtual environment
+# NB: Rename to match your own application namespace
 RUN git clone https://github.com/ONSdigital/pyspike-ops.git
+WORKDIR /home/$user/pyspike-ops
+RUN /home/$user/$envname/bin/pip install .[dev,docbuild]
+
+WORKDIR /home/$user
