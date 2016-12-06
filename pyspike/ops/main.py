@@ -29,6 +29,18 @@ def main(args):
     ch.setFormatter(formatter)
     log.addHandler(ch)
 
+    if args.target not in pyspike.ops.misc.targets: 
+        log.warning("No build defined for target '{}'.".format(args.target))
+        return 1
+
+    for url in pyspike.ops.misc.targets[args.target]:
+        project = os.path.splitext(os.path.basename(url))
+        path = os.path.join(args.work, project)
+        if os.path.exists(path):
+            pyspike.ops.misc.git_checkout(path)
+        else: 
+            pyspike.ops.misc.git_clone(path)
+
     if not args.command:
         log.info("No command supplied.")
 

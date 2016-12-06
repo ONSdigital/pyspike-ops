@@ -5,21 +5,19 @@ import argparse
 import logging
 import os.path
 
+import pyspike.ops.misc
+
 __doc__ = """
 CLI Interface to the pyspike-ops build tool.
 
 Operation via CLI requires a set of common options.
 Each subcommand may have extra options, like this::
 
-    pyspike-buiild <common options> SUBCOMMAND <subcommand options>
+    pyspike-build <common options> SUBCOMMAND <subcommand options>
 
 """
 
-def add_docker_options(parser):
-    parser.add_argument(
-        "--input", required=False,
-        help="path to docker file")
-    return parser
+DFLT_LOCN = os.path.expanduser("~")
 
 def add_common_options(parser):
     parser.add_argument(
@@ -33,6 +31,18 @@ def add_common_options(parser):
     parser.add_argument(
         "--log", default=None, dest="log_path",
         help="Set a file path for log output")
+    parser.add_argument(
+        "--work", default=DFLT_LOCN,
+        help="Set a path to the working directory")
+    return parser
+
+def add_docker_options(parser):
+    return parser
+
+def add_target_options(parser):
+    parser.add_argument(
+        "--target", default=list(pyspike.ops.misc.targets.keys())[0],
+        help="Supply the target repository name")
     return parser
 
 def parser(description=__doc__):
@@ -44,6 +54,7 @@ def parser(description=__doc__):
 def parsers(description=__doc__):
     rv = parser(description)
     rv = add_common_options(rv)
+    rv = add_target_options(rv)
     subparsers = rv.add_subparsers(
         dest="command",
         help="Commands:",
