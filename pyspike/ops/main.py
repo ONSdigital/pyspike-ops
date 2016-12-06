@@ -3,6 +3,7 @@
 
 import logging
 from logging.handlers import WatchedFileHandler
+import os
 import sys
 
 import pyspike.ops.cli
@@ -33,13 +34,18 @@ def main(args):
         log.warning("No build defined for target '{}'.".format(args.target))
         return 1
 
+    locn = os.path.abspath(os.path.expanduser(args.work))
+    log.info("Calculated working directory as {0}".format(locn))
+    os.chdir(locn)
     for url in pyspike.ops.misc.targets[args.target]:
-        project = os.path.splitext(os.path.basename(url))
-        path = os.path.join(args.work, project)
-        if os.path.exists(path):
-            pyspike.ops.misc.git_checkout(path)
+        project = pyspike.ops.misc.url_to_project(url)
+        if os.path.exists(os.path.join(args.work, project)):
+            success = pyspike.ops.misc.git_checkout(args.work, url)
         else: 
-            pyspike.ops.misc.git_clone(path)
+            success = pyspike.ops.misc.git_clone(args.work, url)
+
+        if not success:
+            return 1
 
     if not args.command:
         log.info("No command supplied.")

@@ -2,7 +2,9 @@
 #  coding: UTF-8
 
 from collections import OrderedDict
+import logging
 import os.path
+import subprocess
 
 targets = OrderedDict([
     ("pyspike-app", [
@@ -15,7 +17,14 @@ def url_to_project(url):
     return os.path.splitext(os.path.basename(url))[0]
 
 def git_clone(locn, url, branch="master"):
-    pass
+    log = logging.getLogger("pyspike.git_clone")
+    proc = subprocess.run(["git", "clone", url])
+    if proc.returncode in (128, ):
+        log.warning("Failed to clone {0}.".format(url))
+        return False
+    else:
+        log.info("{0} succeeded.".format(" ".join(proc.args)))
+        return True
 
 def git_checkout(locn, url, branch="master"):
     pass
