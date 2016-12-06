@@ -21,6 +21,14 @@ This is the devops repository. It is a package for:
 * Vendorising the library package.
 * Containerising the application.
 
+Initial steps
+~~~~~~~~~~~~~
+
+Check out the repository and make it your working directory::
+
+    $ git clone https://github.com/ONSdigital/pyspike-ops.git
+    $ cd pyspike-ops
+
 Configuring a staging environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
