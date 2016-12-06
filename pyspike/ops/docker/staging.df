@@ -26,7 +26,7 @@ RUN /home/$user/$envname/bin/pip install --upgrade pip
 # Check out the '-ops' package and install it into the virtual environment
 # NB: Rename to match your own application namespace
 RUN git clone https://github.com/ONSdigital/pyspike-ops.git
-WORKDIR /home/$user/$envname
+WORKDIR /home/$user/pyspike-ops
 RUN /home/$user/$envname/bin/pip install .[dev,docbuild]
 
 ENTRYPOINT ["/home/$user/$envname/bin/pyspike-build", "-v"]
