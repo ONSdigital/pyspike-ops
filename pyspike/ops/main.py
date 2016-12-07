@@ -41,7 +41,7 @@ def main(args):
         project = pyspike.ops.misc.url_to_project(url)
         if os.path.exists(os.path.join(locn, project)):
             success = pyspike.ops.misc.git_pull(locn, project)
-            #success = pyspike.ops.misc.git_checkout(args.work, url)
+            success = success and pyspike.ops.misc.git_checkout(locn, project)
         else: 
             success = pyspike.ops.misc.git_clone(args.work, url)
 
