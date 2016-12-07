@@ -19,22 +19,22 @@ def url_to_project(url):
 def git_clone(locn, url, branch="master"):
     log = logging.getLogger("pyspike.git_clone")
     proc = subprocess.run(["git", "clone", url])
-    if proc.returncode in (128, ):
-        log.warning("Failed to clone {0}.".format(url))
-        return False
-    else:
+    if proc.returncode in (0, ):
         log.info("{0} succeeded.".format(" ".join(proc.args)))
         return True
+    else:
+        log.warning("Failed to clone {0}.".format(url))
+        return False
 
 def git_checkout(locn, url, branch="master"):
     log = logging.getLogger("pyspike.git_clone")
     proc = subprocess.run(["git", "checkout", url])
-    if proc.returncode in (128, ):
-        log.warning("Failed to clone {0}.".format(url))
-        return False
-    else:
+    if proc.returncode in (0, ):
         log.info("{0} succeeded.".format(" ".join(proc.args)))
         return True
+    else:
+        log.warning("Failed to clone {0}.".format(url))
+        return False
 
 def git_pull(locn, project, branch="master"):
     log = logging.getLogger("pyspike.git_pull")
@@ -42,12 +42,12 @@ def git_pull(locn, project, branch="master"):
     os.chdir(path)
     try:
         proc = subprocess.run(["git", "pull", "origin", branch])
-        if proc.returncode in (128, ):
-            log.warning("Failed to pull branch {0}.".format(branch))
-            return False
-        else:
-            log.info("{0} succeeded.".format(" ".join(proc.args)))
+        if proc.returncode in (0, ):
+            log.info("{0}: {1} succeeded.".format(project, " ".join(proc.args)))
             return True
+        else:
+            log.warning("Failed to pull branch {0} for {1}.".format(branch, project))
+            return False
     finally:
         os.chdir(locn)
 
