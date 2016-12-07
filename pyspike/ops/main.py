@@ -39,7 +39,7 @@ def main(args):
     os.chdir(locn)
     for url in pyspike.ops.misc.targets[args.target]:
         project = pyspike.ops.misc.url_to_project(url)
-        if os.path.exists(os.path.join(args.work, project)):
+        if os.path.exists(os.path.join(locn, project)):
             success = pyspike.ops.misc.git_checkout(args.work, url)
         else: 
             success = pyspike.ops.misc.git_clone(args.work, url)
