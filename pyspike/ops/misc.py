@@ -5,6 +5,7 @@ from collections import OrderedDict
 import logging
 import os.path
 import subprocess
+import sys
 
 targets = OrderedDict([
     ("pyspike-app", [
@@ -56,3 +57,34 @@ def git_pull(locn, project, remote="origin", branch="master"):
     finally:
         os.chdir(locn)
 
+def pip_install(locn, project):
+    log = logging.getLogger("pyspike.pip_install")
+    path = os.path.join(locn, project)
+    os.chdir(path)
+    try:
+        pip = os.path.join(*os.path.split(sys.executable)[:-1], "pip")
+        proc = subprocess.run([pip, "install", "."])
+        if proc.returncode in (0, ):
+            log.info("{0}: {1} succeeded.".format(project, " ".join(proc.args)))
+            return True
+        else:
+            log.warning("Failed to install {0}.".format(project))
+            return False
+    finally:
+        os.chdir(locn)
+
+def pip_uninstall(locn, project):
+    log = logging.getLogger("pyspike.pip_uninstall")
+    path = os.path.join(locn, project)
+    os.chdir(path)
+    try:
+        pip = os.path.join(*os.path.split(sys.executable)[:-1], "pip")
+        proc = subprocess.run([pip, "uninstall", "-y", project])
+        if proc.returncode in (0, ):
+            log.info("{0}: {1} succeeded.".format(project, " ".join(proc.args)))
+            return True
+        else:
+            log.warning("Failed to uninstall {0}.".format(project))
+            return False
+    finally:
+        os.chdir(locn)

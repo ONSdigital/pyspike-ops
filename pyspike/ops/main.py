@@ -47,6 +47,9 @@ def main(args):
 
         if not success:
             return 1
+        else:
+            pyspike.ops.misc.pip_uninstall(locn, project)
+            success = pyspike.ops.misc.pip_install(locn, project)
 
     if not args.command:
         log.info("No command supplied.")
