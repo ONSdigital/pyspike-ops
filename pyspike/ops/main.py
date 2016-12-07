@@ -45,11 +45,13 @@ def main(args):
         else: 
             success = pyspike.ops.misc.git_clone(args.work, url)
 
-        if not success:
-            return 1
-        else:
+        if success:
             pyspike.ops.misc.pip_uninstall(locn, project)
             success = pyspike.ops.misc.pip_install(locn, project)
+            # TODO: python -m unittest discover <namespace> 
+
+        if not success:
+            return 1
 
     if not args.command:
         log.info("No command supplied.")

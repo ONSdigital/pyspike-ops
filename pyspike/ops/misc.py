@@ -17,6 +17,10 @@ targets = OrderedDict([
 def url_to_project(url):
     return os.path.splitext(os.path.basename(url))[0]
 
+def project_to_namespace(proj):
+    bits = proj.split("-")
+    return bits[0] if len(bits) > 1 else None
+
 def git_clone(locn, url, branch="master"):
     log = logging.getLogger("pyspike.git_clone")
     proc = subprocess.run(["git", "clone", url])
